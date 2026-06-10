@@ -43,6 +43,7 @@ import 'package:proxypin/ui/mobile/setting/request_crypto.dart';
 import 'package:proxypin/ui/mobile/setting/script.dart';
 import 'package:proxypin/ui/mobile/setting/ssl.dart';
 import 'package:proxypin/ui/mobile/widgets/about.dart';
+import 'package:proxypin/ui/mobile/setting/mcp_server.dart';
 import 'package:proxypin/utils/listenable_list.dart';
 
 import '../../component/proxy_port_setting.dart';
@@ -173,6 +174,11 @@ class DrawerWidget extends StatelessWidget {
                     navigator(context, MobileRequestBreakpointPage(manager: manager));
                   }
                 }),
+            ListTile(
+                title: const Text('MCP Server'),
+                leading: const Icon(Icons.smart_toy_outlined),
+                onTap: () => navigator(context, McpServerPage(proxyServer: proxyServer))),
+            Divider(height: 0, thickness: 0.3, color: Theme.of(context).dividerColor.withValues(alpha: 0.22)),
             ListTile(
                 title: Text(localizations.setting),
                 leading: const Icon(Icons.settings),

@@ -24,6 +24,7 @@ import 'package:proxypin/ui/component/multi_window.dart';
 import 'package:proxypin/ui/component/proxy_port_setting.dart';
 import 'package:proxypin/ui/component/widgets.dart';
 import 'package:proxypin/ui/desktop/setting/about.dart';
+import 'package:proxypin/ui/mobile/setting/mcp_server.dart';
 import 'package:proxypin/ui/desktop/setting/external_proxy.dart';
 import 'package:proxypin/ui/desktop/setting/hosts.dart';
 import 'package:proxypin/ui/desktop/setting/request_block.dart';
@@ -78,6 +79,7 @@ class _SettingState extends State<Setting> {
         item(localizations.requestCrypto, onPressed: showRequestCrypto),
         item(localizations.script,
             onPressed: () => MultiWindow.openWindow(localizations.script, 'ScriptWidget', size: const Size(800, 780))),
+        item('MCP Server', onPressed: showMcpServer),
         item(localizations.breakpoint, onPressed: requestBreakpoint),
         item(localizations.externalProxy, onPressed: setExternalProxy),
         item(localizations.about, onPressed: showAbout),

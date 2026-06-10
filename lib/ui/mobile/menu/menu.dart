@@ -23,6 +23,7 @@ import 'package:proxypin/ui/mobile/mobile.dart';
 import 'package:proxypin/ui/mobile/setting/app_filter.dart';
 import 'package:proxypin/ui/mobile/setting/report_servers.dart';
 import 'package:proxypin/ui/mobile/setting/ssl.dart';
+import 'package:proxypin/ui/mobile/setting/mcp_server.dart';
 import 'package:proxypin/ui/mobile/widgets/highlight.dart';
 import 'package:proxypin/ui/mobile/widgets/remote_device.dart';
 
@@ -87,6 +88,20 @@ class MoreMenu extends StatelessWidget {
                 onTap: () {
                   Navigator.maybePop(context);
                   navigator(context, const ReportServersPageMobile());
+                },
+              )),
+          PopupMenuItem(
+              height: 32,
+              child: ListTile(
+                dense: true,
+                leading: const Icon(Icons.smart_toy_outlined),
+                title: const Text('MCP Server'),
+                onTap: () {
+                  Navigator.maybePop(context);
+                  if (context.mounted) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => McpServerPage(proxyServer: proxyServer)));
+                  }
                 },
               )),
           const PopupMenuDivider(height: 0),

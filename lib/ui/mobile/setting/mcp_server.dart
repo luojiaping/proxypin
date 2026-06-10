@@ -1,0 +1,280 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
+import 'package:proxypin/l10n/app_localizations.dart';
+import 'package:proxypin/mcp/mcp_config.dart';
+import 'package:proxypin/mcp/mcp_server.dart';
+import 'package:proxypin/network/bin/server.dart';
+import 'package:proxypin/ui/component/widgets.dart';
+import 'package:proxypin/utils/ip.dart';
+
+/// MCP Server settings page for mobile.
+class McpServerPage extends StatefulWidget {
+  final ProxyServer proxyServer;
+
+  const McpServerPage({super.key, required this.proxyServer});
+
+  @override
+  State<McpServerPage> createState() => _McpServerPageState();
+}
+
+class _McpServerPageState extends State<McpServerPage> {
+  late McpServerConfig mcpConfig;
+  late TextEditingController _portController;
+  bool _isRunning = false;
+  String _deviceIp = '';
+
+  AppLocalizations get localizations => AppLocalizations.of(context)!;
+
+  @override
+  void initState() {
+    super.initState();
+    mcpConfig = widget.proxyServer.configuration.mcpConfig;
+    _portController = TextEditingController(text: mcpConfig.port.toString());
+    _isRunning = ProxyPinMcpServer.instance?.isRunning ?? false;
+    _loadIp();
+  }
+
+  Future<void> _loadIp() async {
+    try {
+      if (Platform.isAndroid) {
+        final ip = await localIp();
+        if (mounted) setState(() => _deviceIp = ip);
+      } else {
+        _deviceIp = '127.0.0.1';
+      }
+    } catch (_) {
+      _deviceIp = '127.0.0.1';
+    }
+  }
+
+  @override
+  void dispose() {
+    _portController.dispose();
+    super.dispose();
+  }
+
+  void _updateConfig() {
+    widget.proxyServer.configuration.flushConfig();
+  }
+
+  Future<void> _toggleMcp(bool enabled) async {
+    mcpConfig.enabled = enabled;
+    _updateConfig();
+
+    if (enabled) {
+      final server = ProxyPinMcpServer.create(mcpConfig);
+      try {
+        await server.start();
+        if (mounted) {
+          setState(() => _isRunning = true);
+          FlutterToastr.show('MCP Server ${localizations.start}', context);
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() => mcpConfig.enabled = false);
+          _updateConfig();
+          FlutterToastr.show('MCP Server ${localizations.start} failed: $e', context);
+        }
+      }
+    } else {
+      await ProxyPinMcpServer.instance?.stop();
+      if (mounted) {
+        setState(() => _isRunning = false);
+        FlutterToastr.show('MCP Server ${localizations.stop}', context);
+      }
+    }
+  }
+
+  Future<void> _changePort() async {
+    final port = int.tryParse(_portController.text);
+    if (port == null || port < 1024 || port > 65535) {
+      FlutterToastr.show('Port must be 1024-65535', context);
+      return;
+    }
+
+    mcpConfig.port = port;
+    _updateConfig();
+
+    if (_isRunning) {
+      await ProxyPinMcpServer.instance?.restart();
+    }
+
+    if (mounted) {
+      FlutterToastr.show('MCP ${localizations.port}: $port', context);
+    }
+  }
+
+  void _copyEndpoint() {
+    final url = 'http://$_deviceIp:${mcpConfig.port}/mcp';
+    Clipboard.setData(ClipboardData(text: url));
+    FlutterToastr.show('Copied: $url', context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final borderColor = Theme.of(context).dividerColor.withValues(alpha: 0.13);
+    final dividerColor = Theme.of(context).dividerColor.withValues(alpha: 0.22);
+
+    Widget section(List<Widget> tiles) => Card(
+          color: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: borderColor),
+              borderRadius: BorderRadius.circular(10)),
+          child: Column(children: tiles),
+        );
+
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('MCP Server', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+            centerTitle: true),
+        body: ListView(padding: const EdgeInsets.all(12), children: [
+          // --- Enable / Disable ---
+          section([
+            ListTile(
+              title: const Text('MCP Server'),
+              subtitle: Text(
+                _isRunning
+                    ? '${localizations.start} - $_deviceIp:${mcpConfig.port}'
+                    : localizations.stop,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: _isRunning ? Colors.green.shade600 : Colors.grey.shade600,
+                ),
+              ),
+              trailing: SwitchWidget(
+                value: mcpConfig.enabled,
+                scale: 0.8,
+                onChanged: _toggleMcp,
+              ),
+            ),
+          ]),
+          const SizedBox(height: 12),
+
+          // --- Port ---
+          section([
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10),
+              child: Row(children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(localizations.port, style: const TextStyle(fontSize: 14)),
+                      const SizedBox(height: 3),
+                      Text('Default: 9100',
+                          style: TextStyle(fontSize: 11, color: Colors.grey.shade600)),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: _portController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(5),
+                    ],
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    onSubmitted: (_) => _changePort(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                TextButton(
+                  onPressed: _changePort,
+                  child: Text(localizations.save),
+                ),
+                const SizedBox(width: 8),
+              ]),
+            ),
+            const SizedBox(height: 12),
+          ]),
+          const SizedBox(height: 12),
+
+          // --- Connection Info ---
+          section([
+            ListTile(
+              title: Text('Endpoint', style: const TextStyle(fontSize: 14)),
+              subtitle: SelectableText(
+                'http://$_deviceIp:${mcpConfig.port}/mcp',
+                style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.primary),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.copy, size: 20),
+                tooltip: 'Copy',
+                onPressed: _copyEndpoint,
+              ),
+            ),
+            Divider(height: 0, thickness: 0.3, color: dividerColor),
+            ListTile(
+              title: Text(localizations.port, style: const TextStyle(fontSize: 14)),
+              trailing: SelectableText(
+                mcpConfig.port.toString(),
+                style: const TextStyle(fontSize: 14),
+              ),
+            ),
+            Divider(height: 0, thickness: 0.3, color: dividerColor),
+            ListTile(
+              title: const Text('Status', style: TextStyle(fontSize: 14)),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _isRunning ? Icons.circle : Icons.circle_outlined,
+                    size: 12,
+                    color: _isRunning ? Colors.green : Colors.grey,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _isRunning ? 'Running' : 'Stopped',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: _isRunning ? Colors.green.shade700 : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+          const SizedBox(height: 12),
+
+          // --- Help ---
+          section([
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('How to connect',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 8),
+                  Text(
+                    '1. Enable MCP Server above
+'
+                    '2. Copy the endpoint URL
+'
+                    '3. Configure your AI client (Claude Desktop, etc.)
+'
+                    '   to connect to this endpoint
+'
+                    '4. The AI can then control ProxyPin',
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700, height: 1.5),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+          const SizedBox(height: 15),
+        ]));
+  }
+}
