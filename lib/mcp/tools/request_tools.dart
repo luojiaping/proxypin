@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:mcp_dart/mcp_dart.dart';
-import 'package:proxypin/utils/curl.dart';
-import 'package:proxypin/network/http/http.dart';
-import 'package:proxypin/mcp/mcp_traffic_listener.dart';
 import 'package:proxypin/mcp/mcp_server.dart';
 
 void registerRequestTools(McpServer server) {

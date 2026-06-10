@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:mcp_dart/mcp_dart.dart';
 import 'package:proxypin/network/components/manager/request_breakpoint_manager.dart';
-import 'package:proxypin/network/components/request_breakpoint.dart';
 import 'package:proxypin/network/http/http.dart';
 
 void registerBreakpointTools(McpServer server) {

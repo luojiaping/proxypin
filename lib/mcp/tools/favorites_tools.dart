@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:mcp_dart/mcp_dart.dart';
 import 'package:proxypin/storage/favorites.dart';
-import 'package:proxypin/mcp/mcp_traffic_listener.dart';
 import 'package:proxypin/mcp/mcp_server.dart';
 
 void registerFavoritesTools(McpServer server) {

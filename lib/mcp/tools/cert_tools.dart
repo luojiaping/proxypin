@@ -16,8 +16,8 @@ void registerCertTools(McpServer server) {
             'issuer': cert.issuer.toString(),
             'serialNumber': cert.serialNumber,
             'validity': {
-              'notBefore': cert.validity.notBefore?.toIso8601String(),
-              'notAfter': cert.validity.notAfter?.toIso8601String(),
+              'notBefore': cert.validity.notBefore.toIso8601String(),
+              'notAfter': cert.validity.notAfter.toIso8601String(),
             },
           }))],
         );
