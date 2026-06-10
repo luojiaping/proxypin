@@ -23,6 +23,7 @@ import 'package:proxypin/network/components/host_filter.dart';
 import 'package:proxypin/network/util/logger.dart';
 import 'package:proxypin/network/util/system_proxy.dart';
 import 'package:proxypin/utils/platform.dart';
+import 'package:proxypin/mcp/mcp_config.dart';
 
 class Configuration {
   ///代理相关配置
@@ -63,6 +64,9 @@ class Configuration {
   //默认是否启动
   bool startup = false;
 
+  //MCP Server 配置
+  McpServerConfig mcpConfig = McpServerConfig();
+
   Configuration._();
 
   /// 单例
@@ -100,6 +104,9 @@ class Configuration {
     appBlacklist = config['appBlacklist'] == null ? null : List<String>.from(config['appBlacklist']);
     HostFilter.whitelist.load(config['whitelist']);
     HostFilter.blacklist.load(config['blacklist']);
+    if (config['mcp'] != null) {
+      mcpConfig = McpServerConfig.fromJson(Map<String, dynamic>.from(config['mcp']));
+    }
   }
 
   /// 配置文件
@@ -152,6 +159,7 @@ class Configuration {
       'enabledHttp2': enabledHttp2,
       'whitelist': HostFilter.whitelist.toJson(),
       'blacklist': HostFilter.blacklist.toJson(),
+      'mcp': mcpConfig.toJson(),
     };
   }
 }

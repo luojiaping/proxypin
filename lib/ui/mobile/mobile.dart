@@ -41,6 +41,7 @@ import 'package:proxypin/ui/toolbox/toolbox.dart';
 import 'package:proxypin/ui/configuration.dart';
 import 'package:proxypin/ui/content/panel.dart';
 import 'package:proxypin/ui/launch/launch.dart';
+import 'package:proxypin/mcp/mcp_server.dart';
 import 'package:proxypin/ui/mobile/menu/drawer.dart';
 import 'package:proxypin/ui/mobile/menu/bottom_navigation.dart';
 import 'package:proxypin/ui/mobile/menu/menu.dart';
@@ -127,6 +128,11 @@ class MobileHomeState extends State<MobileHomePage> implements EventListener, Li
     proxyServer = ProxyServer(widget.configuration);
     proxyServer.addListener(this);
     proxyServer.start();
+
+    // Start MCP Server if enabled
+    if (widget.configuration.mcpConfig.enabled) {
+      ProxyPinMcpServer.create(widget.configuration.mcpConfig).start();
+    }
     _remoteHistorySubscription = HistoryStorage.onRemoteImported.listen((item) => _openHistoryPage(item));
 
     if (widget.appConfiguration.upgradeNoticeV28) {
@@ -161,6 +167,7 @@ class MobileHomeState extends State<MobileHomePage> implements EventListener, Li
   void dispose() {
     AppLifecycleBinding.instance.removeListener(this);
     _remoteHistorySubscription?.cancel();
+    ProxyPinMcpServer.instance?.stop();
     super.dispose();
   }
 
