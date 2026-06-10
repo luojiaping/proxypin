@@ -48,7 +48,7 @@ void registerBlockTools(McpServer server) {
     description: 'Remove a blocking rule by index.',
     inputSchema: JsonSchema.object(
       properties: {
-        'index': JsonSchema.integer(required: true),
+        'index': JsonSchema.integer(),
       },
     ),
     callback: (args, extra) async {
@@ -63,7 +63,7 @@ void registerBlockTools(McpServer server) {
     description: 'Enable or disable the blocking system.',
     inputSchema: JsonSchema.object(
       properties: {
-        'enabled': JsonSchema.boolean(required: true),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {

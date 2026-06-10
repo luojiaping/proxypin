@@ -97,7 +97,7 @@ void registerRewriteTools(McpServer server) {
     description: 'Enable or disable the entire rewrite system.',
     inputSchema: JsonSchema.object(
       properties: {
-        'enabled': JsonSchema.boolean(required: true),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {

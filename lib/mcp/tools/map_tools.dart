@@ -65,7 +65,7 @@ void registerMapTools(McpServer server) {
     description: 'Delete a mapping rule by index.',
     inputSchema: JsonSchema.object(
       properties: {
-        'index': JsonSchema.integer(required: true),
+        'index': JsonSchema.integer(),
       },
     ),
     callback: (args, extra) async {
@@ -80,7 +80,7 @@ void registerMapTools(McpServer server) {
     description: 'Enable or disable the request mapping system.',
     inputSchema: JsonSchema.object(
       properties: {
-        'enabled': JsonSchema.boolean(required: true),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {

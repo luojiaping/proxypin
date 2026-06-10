@@ -76,7 +76,7 @@ void registerAppTools(McpServer server) {
         }
         return CallToolResult(
           content: [TextContent(text: jsonEncode({
-            'packageName': process.packageName,
+            'packageName': process.id,
             'name': process.name,
           }))],
         );

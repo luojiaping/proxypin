@@ -88,7 +88,7 @@ class ProxyPinMcpServer {
       registerMcpResources(_server!);
 
       // Start Streamable HTTP server
-      final transport = StreamableHttpServerTransport();
+      final transport = StreamableHTTPServerTransport();
       await _server!.connect(transport);
 
       _httpServer = await HttpServer.bind(InternetAddress.anyIPv4, config.port);

@@ -90,7 +90,7 @@ void registerFilterTools(McpServer server) {
     description: 'Enable or disable the whitelist.',
     inputSchema: JsonSchema.object(
       properties: {
-        'enabled': JsonSchema.boolean(required: true),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {
@@ -106,7 +106,7 @@ void registerFilterTools(McpServer server) {
     description: 'Enable or disable the blacklist.',
     inputSchema: JsonSchema.object(
       properties: {
-        'enabled': JsonSchema.boolean(required: true),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {

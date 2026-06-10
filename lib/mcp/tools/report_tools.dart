@@ -59,7 +59,7 @@ void registerReportTools(McpServer server) {
     description: 'Delete a report server by index.',
     inputSchema: JsonSchema.object(
       properties: {
-        'index': JsonSchema.integer(required: true),
+        'index': JsonSchema.integer(),
       },
     ),
     callback: (args, extra) async {
@@ -74,8 +74,8 @@ void registerReportTools(McpServer server) {
     description: 'Enable or disable a report server by index.',
     inputSchema: JsonSchema.object(
       properties: {
-        'index': JsonSchema.integer(required: true),
-        'enabled': JsonSchema.boolean(required: true),
+        'index': JsonSchema.integer(),
+        'enabled': JsonSchema.boolean(),
       },
     ),
     callback: (args, extra) async {
