@@ -17,13 +17,13 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "17"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
 
       - name: Flutter doctor
         run: flutter doctor -v
@@ -33,6 +33,14 @@ jobs:
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Create dummy keystore
+        run: |
+          keytool -genkeypair -v -keystore $HOME/debug.jks -keyalg RSA -keysize 2048 -validity 10000 -alias debug -storepass android -keypass android -dname "CN=CI,O=Test,L=Test,ST=Test,C=US"
+          echo "storeFile=$HOME/debug.jks" > android/key.properties
+          echo "storePassword=android" >> android/key.properties
+          echo "keyAlias=debug" >> android/key.properties
+          echo "keyPassword=android" >> android/key.properties
 
       - name: Build APK (debug)
         run: flutter build apk --debug
