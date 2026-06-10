@@ -29,12 +29,10 @@ jobs:
         run: flutter doctor -v
 
       - name: Install dependencies
-        run: |
-          for i in 1 2 3; do
-            flutter pub get && break
-            echo "Attempt $i failed, retrying in 10s..."
-            sleep 10
-          done
+        run: flutter pub get
+        env:
+          PUB_HOSTED_URL: https://pub.flutter-io.cn
+          FLUTTER_STORAGE_BASE_URL: https://storage.flutter-io.cn
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
