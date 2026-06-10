@@ -34,7 +34,6 @@ void registerReportTools(McpServer server) {
         'compression': JsonSchema.string(description: 'Compression: none or gzip'),
         'splitReport': JsonSchema.boolean(description: 'Split request and response reports (default false)'),
       },
-      required: ['name', 'matchUrl', 'serverUrl'],
     ),
     callback: (args, extra) async {
       try {
@@ -62,7 +61,6 @@ void registerReportTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(required: true),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final manager = await ReportServerManager.instance;
@@ -79,7 +77,6 @@ void registerReportTools(McpServer server) {
         'index': JsonSchema.integer(required: true),
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['index', 'enabled'],
     ),
     callback: (args, extra) async {
       final manager = await ReportServerManager.instance;

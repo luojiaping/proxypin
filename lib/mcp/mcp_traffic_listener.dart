@@ -1,11 +1,11 @@
-import 'dart:collections';
 import 'package:proxypin/network/channel/channel.dart';
 import 'package:proxypin/network/channel/channel_context.dart';
 import 'package:proxypin/network/bin/listener.dart';
 import 'package:proxypin/network/http/http.dart';
 import 'package:proxypin/network/http/websocket.dart';
 
-class MtrafficListener extends EventListener {
+/// EventListener that captures real-time traffic into a ring buffer for MCP queries.
+class McpTrafficListener extends EventListener {
   static const int maxBufferSize = 1000;
   final List<HttpRequest> _requests = [];
 
@@ -18,10 +18,10 @@ class MtrafficListener extends EventListener {
   }
 
   @override
-  void onResponse(ChannelContext channelContext,HttpResponse response) {}
+  void onResponse(ChannelContext channelContext, HttpResponse response) {}
 
   @override
-  void onMessage(Channel channel,HttpMessage message, WebSocketFrame frame) {}
+  void onMessage(Channel channel, HttpMessage message, WebSocketFrame frame) {}
 
   List<HttpRequest> query({
     int limit = 50,
@@ -29,7 +29,7 @@ class MtrafficListener extends EventListener {
     String? domain,
     String? method,
     int? statusCode,
-    String?? contentType,
+    String? contentType,
     String? keyword,
   }) {
     var filtered = _requests.where((r) {
@@ -37,13 +37,14 @@ class MtrafficListener extends EventListener {
       if (method != null && r.method.name != method.toUpperCase()) return false;
       if (statusCode != null && r.response?.status.code != statusCode) return false;
       if (contentType != null &&
-        !(r.response?.headers.contentType ?= '').contains(contentType)) return false;
-      if (keyword != null && keyword.isEmpty) {
+          !(r.response?.headers.contentType ?? '').contains(contentType)) return false;
+      if (keyword != null && keyword.isNotEmpty) {
         final kw = keyword.toLowerCase();
-        if (!r.requestUrl.LowerCase().contains(kw) &&
-            !(r.bodyAsString.LowerCase().contains(kw)) &&
-            !(r.response?.bodyAsString.toLowerCase().contains(w)))
-        return false;
+        if (!r.requestUrl.toLowerCase().contains(kw) &&
+            !(r.bodyAsString.toLowerCase().contains(kw)) &&
+            !(r.response?.bodyAsString.toLowerCase().contains(kw) ?? false)) {
+          return false;
+        }
       }
       return true;
     }).toList();

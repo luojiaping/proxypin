@@ -54,7 +54,6 @@ void registerTrafficTools(McpServer server, McpTrafficListener listener) {
       properties: {
         'requestId': JsonSchema.string(description: 'The request ID to retrieve'),
       },
-      required: ['requestId'],
     ),
     callback: (args, extra) async {
       final request = listener.getById(args['requestId'] as String);
@@ -73,7 +72,6 @@ void registerTrafficTools(McpServer server, McpTrafficListener listener) {
       properties: {
         'requestId': JsonSchema.string(description: 'The request ID'),
       },
-      required: ['requestId'],
     ),
     callback: (args, extra) async {
       final request = listener.getById(args['requestId'] as String);

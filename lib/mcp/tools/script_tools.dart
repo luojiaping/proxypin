@@ -33,7 +33,6 @@ void registerScriptTools(McpServer server) {
         'script': JsonSchema.string(description: 'JavaScript code with onRequest/onResponse functions'),
         'enabled': JsonSchema.boolean(description: 'Enable script (default true)'),
       },
-      required: ['name', 'urls', 'script'],
     ),
     callback: (args, extra) async {
       try {
@@ -59,7 +58,6 @@ void registerScriptTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(required: true),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final manager = await ScriptManager.instance;
@@ -76,7 +74,6 @@ void registerScriptTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await ScriptManager.instance;

@@ -46,7 +46,6 @@ void registerCryptoTools(McpServer server) {
           description: 'Crypto configuration',
         ),
       },
-      required: ['name', 'urlPattern', 'config'],
     ),
     callback: (args, extra) async {
       try {
@@ -83,7 +82,6 @@ void registerCryptoTools(McpServer server) {
       properties: {
         'indexes': JsonSchema.array(items: JsonSchema.integer(), description: 'Indexes to delete'),
       },
-      required: ['indexes'],
     ),
     callback: (args, extra) async {
       final manager = await RequestCryptoManager.instance;
@@ -100,7 +98,6 @@ void registerCryptoTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await RequestCryptoManager.instance;

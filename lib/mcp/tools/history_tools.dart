@@ -27,7 +27,6 @@ void registerHistoryTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(description: 'History session index'),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final storage = await HistoryStorage.instance;
@@ -54,7 +53,6 @@ void registerHistoryTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(description: 'History session index to delete'),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final storage = await HistoryStorage.instance;

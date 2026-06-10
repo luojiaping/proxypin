@@ -30,7 +30,6 @@ void registerHostsTools(McpServer server) {
         'toAddress': JsonSchema.string(description: 'Target IP or domain'),
         'enabled': JsonSchema.boolean(description: 'Enable rule (default true)'),
       },
-      required: ['host', 'toAddress'],
     ),
     callback: (args, extra) async {
       final manager = await HostsManager.instance;
@@ -52,7 +51,6 @@ void registerHostsTools(McpServer server) {
       properties: {
         'ids': JsonSchema.array(items: JsonSchema.string(), description: 'Host mapping IDs to remove'),
       },
-      required: ['ids'],
     ),
     callback: (args, extra) async {
       final manager = await HostsManager.instance;
@@ -70,7 +68,6 @@ void registerHostsTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await HostsManager.instance;

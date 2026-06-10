@@ -38,7 +38,6 @@ void registerBreakpointTools(McpServer server) {
         'interceptResponse': JsonSchema.boolean(description: 'Intercept responses (default true)'),
         'method': JsonSchema.string(description: 'HTTP method filter (GET, POST, etc.)'),
       },
-      required: ['url'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBreakpointManager.instance;
@@ -64,7 +63,6 @@ void registerBreakpointTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(required: true),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBreakpointManager.instance;
@@ -84,7 +82,6 @@ void registerBreakpointTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBreakpointManager.instance;

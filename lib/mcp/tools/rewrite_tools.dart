@@ -44,7 +44,6 @@ void registerRewriteTools(McpServer server) {
           description: 'Rewrite items list',
         ),
       },
-      required: ['url', 'type', 'items'],
     ),
     callback: (args, extra) async {
       try {
@@ -83,7 +82,6 @@ void registerRewriteTools(McpServer server) {
       properties: {
         'indexes': JsonSchema.array(items: JsonSchema.integer(), description: 'Indexes to delete'),
       },
-      required: ['indexes'],
     ),
     callback: (args, extra) async {
       final manager = await RequestRewriteManager.instance;
@@ -101,7 +99,6 @@ void registerRewriteTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await RequestRewriteManager.instance;

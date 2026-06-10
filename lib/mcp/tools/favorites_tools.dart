@@ -29,7 +29,6 @@ void registerFavoritesTools(McpServer server) {
       properties: {
         'requestId': JsonSchema.string(description: 'Request ID to favorite'),
       },
-      required: ['requestId'],
     ),
     callback: (args, extra) async {
       final mcpServer = ProxyPinMcpServer.instance;
@@ -49,7 +48,6 @@ void registerFavoritesTools(McpServer server) {
       properties: {
         'requestId': JsonSchema.string(description: 'Request ID to remove from favorites'),
       },
-      required: ['requestId'],
     ),
     callback: (args, extra) async {
       final favs = await FavoriteStorage.favorites;

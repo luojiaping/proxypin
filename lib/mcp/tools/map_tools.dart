@@ -36,7 +36,6 @@ void registerMapTools(McpServer server) {
         'body': JsonSchema.string(description: 'Response body text for local mapping'),
         'script': JsonSchema.string(description: 'JavaScript code for script mapping'),
       },
-      required: ['url', 'type'],
     ),
     callback: (args, extra) async {
       try {
@@ -68,7 +67,6 @@ void registerMapTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(required: true),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final manager = await RequestMapManager.instance;
@@ -84,7 +82,6 @@ void registerMapTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await RequestMapManager.instance;

@@ -18,7 +18,6 @@ void registerRequestTools(McpServer server) {
         'body': JsonSchema.string(description: 'Request body'),
         'followRedirects': JsonSchema.boolean(description: 'Follow redirects (default true)'),
       },
-      required: ['method', 'url'],
     ),
     callback: (args, extra) async {
       try {
@@ -47,9 +46,6 @@ void registerRequestTools(McpServer server) {
         if (body != null && body.isNotEmpty) {
           req.write(body);
         }
-
-        final followRedirects = args['followRedirects'] as bool? ?? true;
-        client.followRedirects = followRedirects;
 
         final res = await req.close().timeout(Duration(seconds: 30));
         final responseBody = await res.transform(utf8.decoder).join();
@@ -83,7 +79,6 @@ void registerRequestTools(McpServer server) {
         'modifiedHeaders': JsonSchema.object(description: 'Override headers'),
         'modifiedBody': JsonSchema.string(description: 'Override body'),
       },
-      required: ['requestId'],
     ),
     callback: (args, extra) async {
       try {

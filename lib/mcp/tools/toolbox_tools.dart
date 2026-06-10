@@ -12,7 +12,6 @@ void registerToolboxTools(McpServer server) {
         'type': JsonSchema.string(description: 'Encoding type: url, base64, unicode, md5'),
         'input': JsonSchema.string(description: 'Text to encode'),
       },
-      required: ['type', 'input'],
     ),
     callback: (args, extra) async {
       final input = args['input'] as String;
@@ -24,7 +23,7 @@ void registerToolboxTools(McpServer server) {
         case 'base64':
           result = base64Encode(utf8.encode(input));
         case 'unicode':
-          result = input.runes.map((r) => '\u\${r.toRadixString(16).padLeft(4, "0")}').join();
+          result = input.runes.map((r) => r.toRadixString(16).padLeft(4, '0')).join();
         case 'md5':
           result = md5.convert(utf8.encode(input)).toString();
         default:
@@ -42,7 +41,6 @@ void registerToolboxTools(McpServer server) {
         'type': JsonSchema.string(description: 'Decoding type: url, base64, unicode'),
         'input': JsonSchema.string(description: 'Text to decode'),
       },
-      required: ['type', 'input'],
     ),
     callback: (args, extra) async {
       final input = args['input'] as String;
@@ -69,7 +67,6 @@ void registerToolboxTools(McpServer server) {
       properties: {
         'curlCommand': JsonSchema.string(description: 'Full cURL command string'),
       },
-      required: ['curlCommand'],
     ),
     callback: (args, extra) async {
       try {
@@ -95,7 +92,6 @@ void registerToolboxTools(McpServer server) {
       properties: {
         'input': JsonSchema.string(description: 'Timestamp (milliseconds or seconds) or ISO8601 date string'),
       },
-      required: ['input'],
     ),
     callback: (args, extra) async {
       final input = (args['input'] as String).trim();
@@ -131,7 +127,6 @@ void registerToolboxTools(McpServer server) {
         'pattern': JsonSchema.string(description: 'Regular expression pattern'),
         'input': JsonSchema.string(description: 'Text to test against'),
       },
-      required: ['pattern', 'input'],
     ),
     callback: (args, extra) async {
       try {

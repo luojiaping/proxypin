@@ -26,7 +26,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'pattern': JsonSchema.string(description: 'Domain pattern (regex or wildcard)'),
       },
-      required: ['pattern'],
     ),
     callback: (args, extra) async {
       HostFilter.whitelist.add(args['pattern'] as String);
@@ -43,7 +42,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'pattern': JsonSchema.string(description: 'Domain pattern (regex or wildcard)'),
       },
-      required: ['pattern'],
     ),
     callback: (args, extra) async {
       HostFilter.blacklist.add(args['pattern'] as String);
@@ -60,7 +58,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'indexes': JsonSchema.array(items: JsonSchema.integer(), description: 'Indexes to remove'),
       },
-      required: ['indexes'],
     ),
     callback: (args, extra) async {
       final idx = (args['indexes'] as List).cast<int>();
@@ -78,7 +75,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'indexes': JsonSchema.array(items: JsonSchema.integer(), description: 'Indexes to remove'),
       },
-      required: ['indexes'],
     ),
     callback: (args, extra) async {
       final idx = (args['indexes'] as List).cast<int>();
@@ -96,7 +92,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       HostFilter.whitelist.enabled = args['enabled'] as bool;
@@ -113,7 +108,6 @@ void registerFilterTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       HostFilter.blacklist.enabled = args['enabled'] as bool;

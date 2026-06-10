@@ -30,7 +30,6 @@ void registerBlockTools(McpServer server) {
         'type': JsonSchema.string(description: 'blockRequest or blockResponse'),
         'enabled': JsonSchema.boolean(description: 'Enable rule (default true)'),
       },
-      required: ['url', 'type'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBlockManager.instance;
@@ -51,7 +50,6 @@ void registerBlockTools(McpServer server) {
       properties: {
         'index': JsonSchema.integer(required: true),
       },
-      required: ['index'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBlockManager.instance;
@@ -67,7 +65,6 @@ void registerBlockTools(McpServer server) {
       properties: {
         'enabled': JsonSchema.boolean(required: true),
       },
-      required: ['enabled'],
     ),
     callback: (args, extra) async {
       final manager = await RequestBlockManager.instance;

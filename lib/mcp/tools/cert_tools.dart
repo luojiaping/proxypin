@@ -12,8 +12,8 @@ void registerCertTools(McpServer server) {
         final cert = await CertificateManager.getCertificateDetails();
         return CallToolResult(
           content: [TextContent(text: jsonEncode({
-            'subject': cert.subject.toJson(),
-            'issuer': cert.issuer.toJson(),
+            'subject': cert.subject.toString(),
+            'issuer': cert.issuer.toString(),
             'serialNumber': cert.serialNumber,
             'validity': {
               'notBefore': cert.validity.notBefore?.toIso8601String(),

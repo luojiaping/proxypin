@@ -39,7 +39,6 @@ void registerAppTools(McpServer server) {
       properties: {
         'packageName': JsonSchema.string(description: 'Android package name'),
       },
-      required: ['packageName'],
     ),
     callback: (args, extra) async {
       try {
@@ -65,7 +64,6 @@ void registerAppTools(McpServer server) {
         'host': JsonSchema.string(description: 'Host address'),
         'port': JsonSchema.integer(description: 'Port number'),
       },
-      required: ['host', 'port'],
     ),
     callback: (args, extra) async {
       try {
